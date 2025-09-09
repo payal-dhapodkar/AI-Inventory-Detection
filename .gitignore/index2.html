@@ -1,0 +1,828 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen flex items-center justify-center">
+
+<div class="w-full max-w-lg mx-auto">
+    <!-- Login Section -->
+    <!-- <div id="loginSection" class="w-full p-6 bg-white/10 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-4 text-center">Login</h1>
+        <input id="loginEmail" type="email" placeholder="Email" class="w-full p-2 mb-3 rounded text-black">
+        <input id="loginPassword" type="password" placeholder="Password" class="w-full p-2 mb-3 rounded text-black">
+        <button id="loginBtn" class="w-full bg-green-500 py-2 rounded hover:bg-green-600">Login</button>
+        <p class="text-sm text-center mt-2">Don't have an account?
+            <a href="#" onclick="toggleSection('register')" class="text-blue-300 underline">Register here</a>
+        </p>
+    </div> -->
+
+    <!-- Register Section -->
+    <!-- <div id="registerSection" class="hidden w-full p-6 bg-white/10 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold mb-4 text-center">Register</h1>
+        <input id="registerUsername" type="text" placeholder="Username" class="w-full p-2 mb-3 rounded text-black">
+        <input id="registerEmail" type="email" placeholder="Email" class="w-full p-2 mb-3 rounded text-black">
+        <input id="registerPassword" type="password" placeholder="Password" class="w-full p-2 mb-3 rounded text-black">
+        <button id="registerBtn" class="w-full bg-blue-500 py-2 rounded hover:bg-blue-600">Register</button>
+        <p class="text-sm text-center mt-2">Already have an account?
+            <a href="#" onclick="toggleSection('login')" class="text-green-300 underline">Login here</a>
+        </p>
+    </div> -->
+
+    <!-- Home Section -->
+    <!-- <div id="homeSection" class="hidden w-full p-6 bg-white/10 rounded-lg shadow-md text-center">
+        <h1 class="text-3xl font-bold mb-4">Welcome to Inventory Management</h1>
+        <p class="mb-4">You are logged in successfully!</p>
+        <button onclick="logout()" class="bg-red-500 py-2 px-4 rounded hover:bg-red-600">Logout</button>
+    </div>
+</div>
+
+<script>
+const loginSection = document.getElementById('loginSection');
+const registerSection = document.getElementById('registerSection');
+const homeSection = document.getElementById('homeSection');
+
+function toggleSection(section) {
+    loginSection.classList.add('hidden');
+    registerSection.classList.add('hidden');
+    homeSection.classList.add('hidden');
+
+    if (section === 'login') loginSection.classList.remove('hidden');
+    else if (section === 'register') registerSection.classList.remove('hidden');
+    else if (section === 'home') homeSection.classList.remove('hidden');
+} -->
+
+<!-- // ✅ Register Logic -->
+<!-- document.getElementById("registerBtn").addEventListener("click", async () => {
+    const username = document.getElementById("registerUsername").value;
+    const email = document.getElementById("registerEmail").value;
+    const password = document.getElementById("registerPassword").value;
+
+    if (!username || !email || !password) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert("Registered successfully!");
+            toggleSection('login');
+        } else {
+            alert("Registration failed: " + (result.detail || JSON.stringify(result)));
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Error connecting to server");
+    }
+}); --> 
+<!-- 
+// ✅ Login Logic
+// document.getElementById("loginBtn").addEventListener("click", async () => {
+//     const email = document.getElementById("loginEmail").value;
+//     const password = document.getElementById("loginPassword").value;
+
+//     if (!email || !password) {
+//         alert("Please fill all fields");
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch("http://127.0.0.1:8000/auth/login", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//     body: new URLSearchParams({
+//         username: email, // FastAPI uses 'username' instead of email
+//         password: password
+//     })
+// });
+
+//         const result = await response.json();
+//         if (response.ok) {
+//             alert("Login successful!");
+//             localStorage.setItem("token", result.access_token);
+//             toggleSection('home');
+//         } else {
+//             alert("Login failed: " + (result.detail || JSON.stringify(result)));
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         alert("Error connecting to server");
+//     }
+// });
+
+// ✅ Logout
+// function logout() {
+//     localStorage.removeItem("token");
+//     toggleSection('login');
+// }
+// </script>
+
+// </body>
+// </html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Inventory Detection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; }
+    .hidden { display: none; }
+    .container-box {
+      background-color: rgba(31, 41, 55, 0.9);
+      padding: 2rem;
+      border-radius: 0.5rem;
+      width: 400px;
+      margin: auto;
+    }
+    .btn { width: 100%; padding: 0.6rem; border-radius: 0.25rem; font-weight: bold; }
+    .btn-green { background-color: #22c55e; color: white; }
+    .btn-blue { background-color: #3b82f6; color: white; }
+    .btn-red { background-color: #ef4444; color: white; }
+    .btn:hover { opacity: 0.9; }
+    .input-box { width: 100%; padding: 0.5rem; border-radius: 0.25rem; margin-bottom: 1rem; color: black; }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+<!-- 🎨 Enhanced Animated Rectangular Background -->
+  <svg class="absolute top-0 left-0 w-full h-full -z-10 opacity-20" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0ea5e9" />
+        <stop offset="100%" stop-color="#8b5cf6" />
+      </linearGradient>
+    </defs>
+    <rect x="5%" y="10%" width="140" height="70" rx="12" fill="url(#bgGradient)">
+      <animate attributeName="x" values="5%;8%;5%" dur="7s" repeatCount="indefinite" />
+      <animate attributeName="y" values="10%;14%;10%" dur="10s" repeatCount="indefinite" />
+    </rect>
+    <rect x="80%" y="70%" width="160" height="80" rx="14" fill="url(#bgGradient)">
+      <animate attributeName="x" values="80%;77%;80%" dur="11s" repeatCount="indefinite" />
+      <animate attributeName="y" values="70%;74%;70%" dur="8s" repeatCount="indefinite" />
+    </rect>
+    <rect x="40%" y="35%" width="130" height="65" rx="10" fill="url(#bgGradient)" opacity="0.6">
+      <animate attributeName="x" values="40%;42%;40%" dur="14s" repeatCount="indefinite" />
+      <animate attributeName="y" values="35%;38%;35%" dur="11s" repeatCount="indefinite" />
+    </rect>
+    <rect x="20%" y="80%" width="100" height="50" rx="8" fill="url(#bgGradient)" opacity="0.7">
+      <animate attributeName="x" values="20%;23%;20%" dur="9s" repeatCount="indefinite" />
+      <animate attributeName="y" values="80%;77%;80%" dur="13s" repeatCount="indefinite" />
+    </rect>
+    <rect x="65%" y="15%" width="150" height="75" rx="14" fill="url(#bgGradient)" opacity="0.5">
+      <animate attributeName="x" values="65%;62%;65%" dur="10s" repeatCount="indefinite" />
+      <animate attributeName="y" values="15%;19%;15%" dur="10s" repeatCount="indefinite" />
+    </rect>
+    <rect x="30%" y="60%" width="130" height="70" rx="12" fill="url(#bgGradient)" opacity="0.5">
+      <animate attributeName="x" values="30%;33%;30%" dur="8s" repeatCount="indefinite" />
+      <animate attributeName="y" values="60%;63%;60%" dur="12s" repeatCount="indefinite" />
+    </rect>
+     </svg>
+  <!-- LOGIN -->
+  <div id="loginPage" class="container-box">
+    <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+    <input id="loginEmail" type="text" placeholder="Email" class="input-box" />
+    <input id="loginPassword" type="password" placeholder="Password" class="input-box" />
+    <button id="loginBtn" class="btn btn-green mb-3">Login</button>
+    <p class="text-center text-sm">Don't have an account? <a href="#" id="showRegister" class="text-blue-400">Register</a></p>
+    <p id="loginMsg" class="text-red-400 text-center mt-2"></p>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="registerPage" class="container-box hidden">
+    <h2 class="text-2xl font-bold mb-4 text-center">Register</h2>
+    <input id="registerName" type="text" placeholder="Full Name" class="input-box" />
+    <input id="registerEmail" type="text" placeholder="Email" class="input-box" />
+    <input id="registerPassword" type="password" placeholder="Password" class="input-box" />
+    <button id="registerBtn" class="btn btn-blue mb-3">Register</button>
+    <p class="text-center text-sm">Already have an account? <a href="#" id="showLogin" class="text-green-400">Login</a></p>
+    <p id="registerMsg" class="text-red-400 text-center mt-2"></p>
+  </div>
+
+  <!-- HOME
+  <div id="homePage" class="container-box hidden w-[600px]">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Inventory Detection</h2>
+      <button id="logoutBtn" class="btn btn-red w-auto px-3">Logout</button>
+    </div>
+    <div class="mb-4">
+      <h3 class="mb-2">Upload Image</h3>
+      <input type="file" id="imageUpload" class="mb-3" />
+      <button id="detectImageBtn" class="btn btn-green">Detect</button>
+      <p id="uploadStatus" class="text-sm mt-2"></p>
+      <div id="uploadedWrap" class="mt-4"></div>
+    </div>
+    <div>
+      <h3 class="mb-2">Webcam</h3>
+      <video id="webcam" autoplay playsinline class="w-full mb-2 rounded border"></video>
+      <canvas id="webcamOverlay" class="absolute top-0 left-0"></canvas>
+      <div class="flex gap-2">
+        <button id="startWebcamBtn" class="btn btn-blue">Start Webcam</button>
+        <button id="captureBtn" class="btn btn-blue">Capture & Detect</button>
+      </div>
+      <p id="webcamStatus" class="text-sm mt-2"></p>
+    </div>
+  </div> -->
+
+<!-- HOME -->
+  <!-- <div id="homePage" class="hidden w-full max-w-5xl mx-auto mt-10 px-4">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-3xl font-bold">Inventory Detection</h2>
+      <button id="logoutBtn" class="bg-indigo-500 px-4 py-2 rounded hover:bg-indigo-600">Logout</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+    <div class="bg-white/10 p-6 rounded-lg shadow-md">
+      <h3 class="block mb-2">Upload Image</h3>
+      <input type="file" id="imageUpload" accept="image/*" class="w-full-indigo-mb-4"/>
+      <button id="detectImageBtn" class="w-full mt-4 bg-indigo-500 py-2 rounded hover:bg-indigo-600">Detect</button>
+      <p id="uploadStatus" class="text-sm mt-2"></p>
+      <div id="uploadedWrap" class="mt-4"></div>
+    </div>
+    <div>
+      <h3 class="mb-2">Webcam</h3>
+      <video id="webcam" autoplay playsinline class="w-full rounded mb-4"></video> -->
+      <!-- <canvas id="webcamOverlay" class="absolute top-0 left-0"></canvas> -->
+      <!-- <div class="flex gap-2">
+        <button id="startWebcamBtn" class="btn btn-blue">Start Webcam</button>
+        <button id="captureBtn" class="w-full bg-indigo-500 py-2 rounded hover:bg-indigo-600">Capture & Detect</button>
+      </div>
+      <p id="webcamStatus" class="text-sm mt-2"></p>
+    </div>
+  </div> -->
+
+<!-- 🏠 HOME PAGE -->
+  <!-- <div id="homePage" class="hidden w-full max-w-5xl mx-auto mt-10 px-4">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-3xl font-bold">Inventory Detection</h2>
+      <button onclick="logout()" class="bg-indigo-500 px-4 py-2 rounded hover:bg-indigo-600">Logout</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> -->
+      <!-- 📤 Upload -->
+      <!-- <div class="bg-white/10 p-6 rounded-lg shadow-md">
+        <label class="block mb-2">Upload an image</label>
+        <input type="file" id="uploadBtn" accept="image/*" class="w-full-indigo-mb-4">
+        <img id="imagePreview" class="hidden mt-4 w-full max-h-80 object-contain bg-white rounded" />
+        <button id="predictBtn" class="w-full mt-4 bg-indigo-500 py-2 rounded hover:bg-indigo-600">Detect Objects</button>
+      </div> -->
+
+      <!-- 🎥 Webcam -->
+      <!-- <div class="bg-white/10 p-6 rounded-lg shadow-md">
+        <label class="block mb-2">Webcam</label>
+        <video id="webcam" autoplay playsinline class="w-full rounded mb-4"></video>
+        <button id="captureBtn" class="w-full bg-indigo-500 py-2 rounded hover:bg-indigo-600">Capture & Detect</button>
+      </div>
+    </div>
+    <h3>Add New Images</h3>
+<input type="file" id="newImageInput" accept="image/*" multiple>
+<button id="uploadNewImageBtn">Upload Images</button>
+<p id="uploadStatus"></p>
+<div id="uploadedImages"></div>
+<div id="uploaded-files" style="margin-top: 20px;"></div>
+<div id="prediction-results" style="margin-top:20px;"></div>
+<div class="mt-10 bg-white/10 p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold mb-4">Prediction Results</h3>
+      <pre id="results" class="text-green-300 whitespace-pre-wrap">Results will appear here...</pre>
+    </div>
+  </div> -->
+
+
+
+  <!-- 🏠 HOME PAGE -->
+<!-- <div id="homePage" class="hidden w-full max-w-6xl mx-auto mt-10 px-6"> -->
+  <!-- Header -->
+  <!-- <div class="flex justify-between items-center mb-8">
+    <h2 class="text-3xl font-bold text-white">Inventory Detection</h2>
+    <button id="logoutBtn" class="bg-indigo-500 px-5 py-2 rounded hover:bg-indigo-600">Logout</button>
+  </div> -->
+
+  <!-- Main Two-Column Layout -->
+  <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> -->
+    <!-- Upload Section -->
+    <!-- <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Upload Image</h3>
+      <input type="file" id="uploadBtn" accept="image/*" class="block w-full text-white mb-4" />
+      <img id="imagePreview" class="hidden mt-4 w-full max-h-80 object-contain bg-white rounded" />
+      <button id="predictBtn" class="w-full mt-4 bg-indigo-500 py-3 text-lg rounded hover:bg-indigo-600">Detect</button>
+    </div> -->
+
+    <!-- Webcam Section -->
+    <!-- <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
+      <h3 class="text-lg font-semibold mb-4">Webcam</h3>
+      <video id="webcam" autoplay playsinline class="w-full h-64 rounded bg-gray-700 mb-4"></video>
+      <div class="flex gap-4 w-full">
+        <button id="startWebcamBtn" class="flex-1 bg-blue-500 py-3 text-lg rounded hover:bg-blue-600">Start Webcam</button>
+        <button id="captureBtn" class="flex-1 bg-indigo-500 py-3 text-lg rounded hover:bg-indigo-600">Capture & Detect</button>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Prediction Results -->
+  <!-- <div class="mt-10 bg-gray-800 p-6 rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold mb-4">Prediction Results</h3>
+    <pre id="results" class="text-green-300 whitespace-pre-wrap">Results will appear here...</pre>
+  </div>
+</div> -->
+
+<!-- HOME PAGE START -->
+<!-- <div id="homePage" class="hidden min-h-screen px-6 py-8"> -->
+  <!-- Header -->
+  <!-- <div class="flex justify-between items-center mb-8">
+    <h2 class="text-3xl font-bold text-white">Inventory Detection</h2>
+    <button id="logoutBtn" class="bg-indigo-500 px-5 py-2 rounded hover:bg-indigo-600">Logout</button>
+  </div> -->
+
+  <!-- Two-Column Layout -->
+  <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> -->
+    <!-- Upload Section -->
+    <!-- <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Upload Image</h3>
+      <input type="file" id="uploadImage" accept="image/*" class="block w-full text-white mb-4" />
+      <img id="previewImage" class="hidden mt-4 w-full max-h-80 object-contain bg-white rounded" />
+      <button id="detectBtn" class="w-full mt-4 bg-indigo-500 py-3 text-lg rounded hover:bg-indigo-600">Detect</button>
+    </div> -->
+
+    <!-- Webcam Section -->
+    <!-- <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
+      <h3 class="text-lg font-semibold mb-4">Webcam</h3>
+      <video id="webcam" autoplay playsinline class="w-full h-64 rounded bg-gray-700 mb-4"></video>
+      <div class="flex gap-4 w-full">
+        <button id="startWebcamBtn" class="flex-1 bg-blue-500 py-3 text-lg rounded hover:bg-blue-600">Start Webcam</button>
+        <button id="captureBtn" class="flex-1 bg-indigo-500 py-3 text-lg rounded hover:bg-indigo-600">Capture & Detect</button>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Prediction Results -->
+  <!-- <div class="mt-10 bg-gray-800 p-6 rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold mb-4">Prediction Results</h3>
+    <pre id="predictionResult" class="text-green-300 whitespace-pre-wrap">Results will appear here...</pre>
+  </div>
+</div> -->
+<!-- HOME PAGE END -->
+
+<!-- HOME PAGE START -->
+<div id="homePage" class="hidden min-h-screen px-6 py-8">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-8">
+    <h2 class="text-3xl font-bold text-white">Inventory Detection</h2>
+    <button id="logoutBtn" class="bg-indigo-500 px-5 py-2 rounded hover:bg-indigo-600">Logout</button>
+  </div>
+
+  <!-- Two-Column Layout -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Upload Section -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h3 class="text-lg font-semibold mb-4">Upload Image</h3>
+      <input type="file" id="imageUpload" accept="image/*" class="block w-full text-white mb-4" />
+      <p id="uploadStatus" class="text-sm mt-2"></p>
+      <div id="uploadedWrap" class="mt-4"></div>
+      <button id="detectImageBtn" class="w-full mt-4 bg-indigo-500 py-3 text-lg rounded hover:bg-indigo-600">
+        Detect
+      </button>
+    </div>
+
+    <!-- Webcam Section -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
+      <h3 class="text-lg font-semibold mb-4">Webcam</h3>
+      <video id="webcam" autoplay playsinline class="w-full h-64 rounded bg-gray-700 mb-4"></video>
+      <div class="flex gap-4 w-full">
+        <button id="startWebcamBtn" class="flex-1 bg-blue-500 py-3 text-lg rounded hover:bg-blue-600">Start Webcam</button>
+        <button id="captureBtn" class="flex-1 bg-indigo-500 py-3 text-lg rounded hover:bg-indigo-600">Capture & Detect</button>
+      </div>
+      <p id="webcamStatus" class="text-sm mt-2"></p>
+    </div>
+  </div>
+<!-- update  -->
+<!-- Add to Dataset Section -->
+<div class="mt-10 bg-gray-800 p-6 rounded-lg shadow-lg">
+   <h3 class="text-xl font-semibold mb-4">📂 Add Image to Dataset</h3>
+  
+   <input type="file" id="datasetImageUpload" accept="image/*" class="block w-full text-white mb-4" />
+  
+  
+   <div id="datasetImagePreview" class="mt-4"></div>
+  
+  
+   <input type="text" id="datasetClassName" placeholder="Enter class label" 
+          class="w-full mb-4 px-3 py-2 rounded bg-gray-700 text-white border border-gray-600" />
+  
+  
+   <button id="addDatasetBtn" 
+           class="w-full bg-green-500 py-3 text-lg rounded hover:bg-green-600">
+     Add to Dataset
+   </button>
+  
+   <p id="datasetStatus" class="mt-3 text-sm"></p>
+ </div>
+ <!-- closeupdate  -->
+  <!-- Prediction Results -->
+  <div class="mt-10 bg-gray-800 p-6 rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold mb-4">Prediction Results</h3>
+    <pre id="results" class="text-green-300 whitespace-pre-wrap">Results will appear here...</pre>
+  </div>
+</div>
+<!-- HOME PAGE END -->
+
+
+<script>
+const API_BASE = "http://127.0.0.1:8000"; // Change if backend is different
+
+const loginPage = document.getElementById('loginPage');
+const registerPage = document.getElementById('registerPage');
+const homePage = document.getElementById('homePage');
+
+document.getElementById('showRegister').onclick = () => { loginPage.classList.add('hidden'); registerPage.classList.remove('hidden'); };
+document.getElementById('showLogin').onclick = () => { registerPage.classList.add('hidden'); loginPage.classList.remove('hidden'); };
+
+// LOGIN
+document.getElementById('loginBtn').onclick = async () => {
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  const msg = document.getElementById('loginMsg');
+  msg.textContent = '';
+
+  const body = new URLSearchParams();
+  body.set('username', email);
+  body.set('password', password);
+  body.set('grant_type', 'password');
+
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body
+  });
+  const data = await res.json();
+  if (res.ok) {
+    localStorage.setItem('token', data.access_token);
+    loginPage.classList.add('hidden'); homePage.classList.remove('hidden');
+  } else msg.textContent = data.detail || 'Login failed';
+};
+
+// REGISTER
+document.getElementById('registerBtn').onclick = async () => {
+  const name = document.getElementById('registerName').value;
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+  const msg = document.getElementById('registerMsg');
+  msg.textContent = '';
+
+  const res = await fetch(`${API_BASE}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ full_name: name, email, password })
+  });
+  const data = await res.json();
+  if (res.ok) {
+    msg.style.color = 'lightgreen';
+    msg.textContent = 'Registered successfully, please login';
+    setTimeout(() => { registerPage.classList.add('hidden'); loginPage.classList.remove('hidden'); }, 1500);
+  } else msg.textContent = data.detail || 'Registration failed';
+};
+
+// LOGOUT
+document.getElementById('logoutBtn').onclick = () => {
+  localStorage.removeItem('token');
+  homePage.classList.add('hidden'); loginPage.classList.remove('hidden');
+};
+
+// IMAGE DETECTION
+document.getElementById('detectImageBtn').onclick = async () => {
+  const token = localStorage.getItem('token');
+  const file = document.getElementById('imageUpload').files[0];
+  const status = document.getElementById('uploadStatus');
+  if (!file) { status.textContent = 'Select an image'; return; }
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`${API_BASE}/predict`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` },
+    body: formData
+  });
+  const data = await res.json();
+  if (res.ok) {
+  displayResults(data);   // ✅ send to Prediction Results
+  status.textContent = ""; // clear the small upload box
+} else {
+  status.textContent = "Detection failed";
+}
+};
+
+document.getElementById("imageUpload").addEventListener("change", function (event) {
+  const file = event.target.files[0];
+  const previewContainer = document.getElementById("uploadedWrap");
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      previewContainer.innerHTML = `
+        <img src="${e.target.result}" 
+             alt="Uploaded Image" 
+             class="mt-4 w-full max-h-80 object-contain rounded border border-gray-600" />
+      `;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    previewContainer.innerHTML = "";
+  }
+});
+
+
+// WEBCAM
+const webcam = document.getElementById('webcam');
+document.getElementById('startWebcamBtn').onclick = async () => {
+  const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  webcam.srcObject = stream;
+};
+document.getElementById('captureBtn').onclick = async () => {
+  const canvas = document.createElement('canvas');
+  canvas.width = webcam.videoWidth;
+  canvas.height = webcam.videoHeight;
+  canvas.getContext('2d').drawImage(webcam, 0, 0);
+  canvas.toBlob(async (blob) => {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('file', blob, 'capture.jpg');
+    const res = await fetch(`${API_BASE}/predict`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: formData
+    });
+    const data = await res.json();
+    // document.getElementById('webcamStatus').textContent = res.ok ? JSON.stringify(data) : 'Detection failed';
+    if (res.ok) {
+  displayResults(data);   // ✅ send to Prediction Results
+  document.getElementById("webcamStatus").textContent = "";
+} else {
+  document.getElementById("webcamStatus").textContent = "Detection failed";
+}
+  }, 'image/jpeg');
+};
+
+// update
+// javascript
+// Preview selected dataset image
+document.getElementById("datasetImageUpload").addEventListener("change", function (event) {
+  const file = event.target.files[0];
+  const preview = document.getElementById("datasetImagePreview");
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.innerHTML = `<img src="${e.target.result}" 
+                             class="mt-2 w-full max-h-64 object-contain rounded border border-gray-600" />`;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.innerHTML = "";
+  }
+});
+
+// Upload dataset image with class label
+document.getElementById("addDatasetBtn").addEventListener("click", async () => {
+  const fileInput = document.getElementById("datasetImageUpload");
+  const className = document.getElementById("datasetClassName").value.trim();
+  const status = document.getElementById("datasetStatus");
+
+  if (!fileInput.files.length || !className) {
+    status.textContent = "⚠️ Please select an image and enter a class label.";
+    status.className = "text-red-400";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+  formData.append("class_name", className);
+
+  try {
+    const res = await fetch("http://127.0.0.1:8000/add_to_dataset", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      status.textContent = `✅ ${data.message}`;
+      status.className = "text-green-400";
+    } else {
+      status.textContent = `❌ Error: ${data.detail || "Failed to upload"}`;
+      status.className = "text-red-400";
+    }
+  } catch (err) {
+    console.error(err);
+    status.textContent = "❌ Server error";
+    status.className = "text-red-400";
+  }
+});
+
+
+// closeupdate
+
+object_info = {
+"10337336": {
+"description": "Fine-threaded screw for precision assemblies.",
+"use": "Used in electronics or fine mechanics.",
+"price": "$0.10",
+"location": "Shelf A1"
+},
+"10344614": {
+"description": "Quarter-inch fine thread screw.",
+"use": "Used in light metal construction.",
+"price": "$0.12",
+"location": "Shelf A2"
+},
+"10345315": {
+"description": "Heavy-duty metric screw.",
+"use": "Structural or industrial uses.",
+"price": "$0.50",
+"location": "Shelf B1"
+},
+"10345517": {
+"description": "Metric 4mm screw with 8mm length.",
+"use": "Used in panels and brackets.",
+"price": "$0.08",
+"location": "Shelf C3"
+},
+"0348974": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"10439665": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"10452055": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"0454022": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"10454776": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"10454837": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"10558519": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"10565488": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"video2": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+"video_frame": {
+"description": "5mm screw, commonly used in mounts.",
+"use": "Used in robotics and enclosures.",
+"price": "$0.10",
+"location": "Shelf C4"
+},
+}
+//   function displayResults(result) {
+//     const container = document.getElementById('results');
+//     container.innerHTML = ""; // Clear old results
+
+//     if (!result.detections || result.detections.length === 0) {
+//         container.innerHTML = "<p class='text-red-500'>No objects detected.</p>";
+//         return;
+//     }
+
+//     let table = `
+//         <table class="w-full border-collapse border border-gray-500 text-sm">
+//             <thead>
+//                 <tr class="bg-indigo-600 text-white">
+//                     <th class="border p-2">Object</th>
+//                     <th class="border p-2">Confidence</th>
+//                     <th class="border p-2">Description</th>
+//                     <th class="border p-2">Use</th>
+//                     <th class="border p-2">Price</th>
+//                     <th class="border p-2">Location</th>
+//                 </tr>
+//             </thead>
+//             <tbody>
+//     `;
+
+
+
+//     result.detections.forEach(item => {
+//         const info = objectInfo[item.id] || {};
+//         table += `
+//             <tr>
+//                 <td class="border p-2">${item.name || item.id}</td>
+//                 <td class="border p-2">${(item.confidence * 100).toFixed(2)}%</td>
+//                 <td class="border p-2">${info.description || "N/A"}</td>
+//                 <td class="border p-2">${info.use || "N/A"}</td>
+//                 <td class="border p-2">${info.price || "N/A"}</td>
+//                 <td class="border p-2">${info.location || "N/A"}</td>
+//             </tr>
+//         `;
+//     });
+
+//     table += `</tbody></table>`;
+//     container.innerHTML = table;
+// }
+
+//  function displayResults(result) {
+//     const container = document.getElementById('results');
+//     container.innerHTML = "";
+
+//     if (!result.results || result.results.length === 0) {
+//         container.innerHTML = "<p class='text-red-500'>No objects detected.</p>";
+//         return;
+//     }
+
+//     let table = `...`;
+
+//     result.results.forEach(item => {
+//         const info = object_info[item.class] || {};
+//         table += `
+//             <tr>
+//                 <td class="border p-2">${item.class}</td>
+//                 <td class="border p-2">${(item.score * 100).toFixed(2)}%</td>
+//                 <td class="border p-2">${item.description || "N/A"}</td>
+//                 <td class="border p-2">${item.use || "N/A"}</td>
+//                 <td class="border p-2">${item.price || "N/A"}</td>
+//                 <td class="border p-2">${item.location || "N/A"}</td>
+//             </tr>
+//         `;
+//     });
+
+//     table += `</tbody></table>`;
+//     container.innerHTML = table;
+// }
+
+function displayResults(result) {
+  const container = document.getElementById("results");
+  container.innerHTML = "";
+
+  if (!result.results || result.results.length === 0) {
+    container.innerHTML = "<p class='text-red-500'>No objects detected.</p>";
+    return;
+  }
+
+  result.results.forEach((item, index) => {
+    const block = document.createElement("div");
+    block.className = "mb-2 p-2 border border-gray-600 rounded bg-gray-900 text-green-300 text-sm leading-tight";
+
+    block.innerHTML = `
+      <div class="font-semibold text-white mb-1">Detection ${index + 1}</div>
+      <div class="flex gap-1"><span class="font-semibold">Class:</span><span>${item.class}</span></div>
+      <div class="flex gap-1"><span class="font-semibold">Confidence:</span><span>${(item.score * 100).toFixed(2)}%</span></div>
+      <div class="flex gap-1"><span class="font-semibold">Bounding Box:</span><span>${item.bbox.join(", ")}</span></div>
+      <div class="flex gap-1"><span class="font-semibold">Description:</span><span>${item.description || "N/A"}</span></div>
+      <div class="flex gap-1"><span class="font-semibold">Use:</span><span>${item.use || "N/A"}</span></div>
+      <div class="flex gap-1"><span class="font-semibold">Price:</span><span>${item.price || "N/A"}</span></div>
+      <div class="flex gap-1"><span class="font-semibold">Location:</span><span>${item.location || "N/A"}</span></div>
+    `;
+
+    container.appendChild(block);
+  });
+}
+
+
+
+
+</script>
+</body>
+</html>

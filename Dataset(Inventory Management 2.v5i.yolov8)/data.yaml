@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 14
+names: ['10337336', '10344614', '10345315', '10345517', '10348974', '10439665', '10452055', '10454022', '10454776', '10454837', '10558519', '10565488', 'video2', 'video_frame']
+
+roboflow:
+  workspace: payal-dhapodkar
+  project: inventory-management-2
+  version: 5
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/payal-dhapodkar/inventory-management-2/dataset/5
