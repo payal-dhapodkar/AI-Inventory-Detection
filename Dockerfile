@@ -1,5 +1,5 @@
 # Use lightweight Python image
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 # Install system dependencies needed by YOLO/Ultralytics
 RUN apt-get update && apt-get install -y \
@@ -28,3 +28,4 @@ RUN mkdir -p /app/models /app/uploads /app/dataset_images /app/static
 # Run app on port 8000
 EXPOSE 8000
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+
