@@ -15,6 +15,10 @@ from pydantic import BaseModel, EmailStr
 from fastapi.responses import JSONResponse
 from PIL import Image
 import io
+# update
+import os
+import uvicorn
+# close
 from fastapi import APIRouter
 from datetime import datetime
 from fastapi.exceptions import RequestValidationError
@@ -220,4 +224,10 @@ async def add_to_dataset(
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
+
     return {"message": f"Image added to dataset under class '{class_name}'"}
+# update
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  # 8000 default for local dev
+    uvicorn.run("backend.app:app", host="0.0.0.0", port=port)
+# close
