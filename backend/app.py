@@ -54,6 +54,16 @@ class User(BaseModel):
     username: str
     password: str
 
+# update
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["https://ai-inventory-detection-13.onrender.com"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+# close
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
     # Check if it's an email validation issue
@@ -231,3 +241,4 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))  # 8000 default for local dev
     uvicorn.run("backend.app:app", host="0.0.0.0", port=port)
 # close
+
