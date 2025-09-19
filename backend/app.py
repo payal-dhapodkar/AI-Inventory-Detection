@@ -87,7 +87,7 @@ async def validation_exception_handler(request, exc):
 router = APIRouter()
 users_db = {}
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 model = YOLO("best (5).pt")
 print("Loaded YOLOv8 model classes:", model.names)
 
@@ -246,5 +246,6 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))  # 8000 default for local dev
     uvicorn.run("backend.app:app", host="0.0.0.0", port=port)
 # close
+
 
 
