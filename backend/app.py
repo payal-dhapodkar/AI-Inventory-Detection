@@ -26,16 +26,21 @@ from fastapi.responses import JSONResponse
 from fastapi.exception_handlers import RequestValidationError as ValidationErrorHandler
 from fastapi import Form
 from datetime import datetime, timedelta
-from backend.object_info import object_info
+# from backend.object_info import object_info
+from object_info import object_info
 import jwt
-from backend.database import (
+# from backend.database import (
+from database import (
     users_collection,
     detections_collection,
     ensure_indexes,
 )
-from backend.schemas import UserRegister, UserOut, Token, DetectionOut, DetectionList
-from backend.models import user_helper, detection_helper
-from backend.auth import (
+# from backend.schemas import UserRegister, UserOut, Token, DetectionOut, DetectionList
+# from backend.models import user_helper, detection_helper
+# from backend.auth import (
+from schemas import UserRegister, UserOut, Token, DetectionOut, DetectionList
+from models import user_helper, detection_helper
+from auth import (
     get_password_hash,
     verify_password,
     create_access_token,
@@ -241,4 +246,5 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))  # 8000 default for local dev
     uvicorn.run("backend.app:app", host="0.0.0.0", port=port)
 # close
+
 
