@@ -88,7 +88,7 @@ router = APIRouter()
 users_db = {}
 
 # app.mount("/static", StaticFiles(directory="static"), name="static")
-MODEL_PATH = YOLO("best (5).pt")
+MODEL_PATH = YOLO("best.pt")
 # update
 model_url = "https://drive.google.com/file/d/1wGKD_rMhhoCDvSiUTs4HqUrN_hKJvL_k/view?usp=sharing"
 print("Loaded YOLOv8 model classes:", model.names)
@@ -257,6 +257,7 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))  # 8000 default for local dev
     uvicorn.run("backend.app:app", host="0.0.0.0", port=port)
 # close
+
 
 
 
